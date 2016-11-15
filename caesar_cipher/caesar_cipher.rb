@@ -2,19 +2,17 @@
 # then outputs the modified string
 
 def caesar_cipher(sentence, raw_offset)
-  offset = raw_offset % 26  
+  offset = raw_offset % 26
+  sentence.gsub(/([a-zA-Z])/){|char| shift_the_letter(char.ord, offset).chr}
+end
 
-  def shift_the_letter(letter_value, shift_value)
-    cipher_letter = letter_value + shift_value
+def shift_the_letter(letter_value, shift_value)
+  cipher_letter = letter_value + shift_value
+  cipher_letter > z_spot(letter_value) ? cipher_letter - 26 : cipher_letter
+end
 
-    def z_spot(current_char)
-      current_char.between?(65, 90) ? 90 : 122
-    end
-
-    cipher_letter > z_spot(letter_value) ? cipher_letter - 26 : cipher_letter
-  end
-
-  sentence.gsub(/([a-zA-Z])/){|char| shift_the_letter(char.ord, offset).chr} 
+def z_spot(current_char)
+  current_char.between?(65, 90) ? 90 : 122
 end
 
 puts caesar_cipher("test", 5)
