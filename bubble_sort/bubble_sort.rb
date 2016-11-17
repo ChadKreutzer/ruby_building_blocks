@@ -34,3 +34,10 @@ bubble_sort([4,3,6,2,1,8,7])
 #     >   left.length - right.length
 #     > end
 #     => ["hi", "hey", "hello"]
+
+def bubble_sort_by(test_array)
+  temp = false
+  until temp == true do
+    temp = true
+    (0..test_array.length -1).each do |x|
+      
