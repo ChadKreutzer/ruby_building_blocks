@@ -7,3 +7,4 @@ including:
 * Caeser Cipher
 * Stock Picker
 * Substrings
+* Bubble Sort
