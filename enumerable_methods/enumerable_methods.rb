@@ -1,27 +1,3 @@
-# Create a script file to house your methods and run it in IRB to test them
-# later.
-
-# Add your new methods onto the existing Enumerable module. Ruby makes this
-# easy for you because any class or module can be added to without trouble
-# ... just do something like:
-
-#     module Enumerable
-#       def my_each
-#         # your code here
-#       end
-#     end
-
-# Modify your #my_map method to take a proc instead.
-
-# Modify your #my_map method to take either a proc or a block. It won't be
-# necessary to apply both a proc and a block in the same #my_map call since
-# you could get the same effect by chaining together one #my_map call with the
-# block and one with the proc. This approach is also clearer, since the user
-# doesn't have to remember whether the proc or block will be run first. So if
-# both a proc and a block are given, only execute the proc.
-
-# Quick Tips: Remember yield and the #call method.
-
 module Enumerable
   
   # Create #my_each, a method that is identical to #each but (obviously) does
@@ -117,11 +93,20 @@ module Enumerable
   end
   
   # Create #my_map
-  def my_map
+  
+  # Modify your #my_map method to take a proc instead.
+
+  # Modify your #my_map method to take either a proc or a block. It won't be
+  # necessary to apply both a proc and a block in the same #my_map call since
+  # you could get the same effect by chaining together one #my_map call with the
+  # block and one with the proc. This approach is also clearer, since the user
+  # doesn't have to remember whether the proc or block will be run first. So if
+  # both a proc and a block are given, only execute the proc.
+  def my_map(&proc)
     if block_given?
       map_array = []
       (self.length).times do |item|
-        map_array.push(yield self[item])
+        map_array.push(proc.call self[item])
       end
       map_array
     else
@@ -134,9 +119,23 @@ module Enumerable
   # Test your #my_inject by creating a method called #multiply_els which
   # multiplies all the elements of the array together by using #my_inject, e.g.
   # multiply_els([2,4,5]) #=> 40
-  
-  
+  def my_inject(*args)
+    memo = 0
+    total = args[0] ||= 0
+    if block_given?
+      (self.to_a.length).times do |item|
+       total += yield memo, self.to_a[item]
+      end
+      total
+    else
+      self.to_enum
+    end
+  end
 end
 
-a = [ "a", "b", "c", "d" ]
-p a.my_map { |x| x + "!" } 
+# a = [ "a", "b", "c", "d" ]
+# p a.my_map { |x| x + "!" }
+# my_proc = Proc.new { |x| x + "**" }
+# p a.my_map(&my_proc)
+
+p (5..10).my_inject(5) { |sum, n| sum * n }
