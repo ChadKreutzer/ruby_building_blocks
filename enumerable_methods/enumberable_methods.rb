@@ -46,3 +46,13 @@
 # both a proc and a block are given, only execute the proc.
 
 # Quick Tips: Remember yield and the #call method.
+
+module Enumerable
+  def my_each
+    (self.length - 1).times do |x|
+      yield self[x]
+    end
+  end
+end
+
+p [1,2,3,4,5,6].my_each { |x| p x + 2 }
