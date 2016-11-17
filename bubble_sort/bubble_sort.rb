@@ -50,13 +50,6 @@ def bubble_sort_by(test_array)
   test_array
 end
 
-def swap(first, second)
-  temp = first
-  first = second
-  second = temp
-end
-  
-
 p bubble_sort_by([4,3,6,2,1,8,7]) {|a, b| b <=> a }
 
 test =  bubble_sort_by(["hi","hello","hey"]) do |left,right|
