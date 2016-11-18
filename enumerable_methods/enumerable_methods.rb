@@ -5,10 +5,11 @@ module Enumerable
   # returns the same thing as #each as well.
   def my_each
     if block_given?
-      (self.length).times do |item|
-        yield self[item]
+      self_array = self.to_a
+      (self_array.length).times do |item|
+        yield self_array[item]
       end
-      self
+      self_array
     else
       self.to_enum
     end
@@ -17,10 +18,11 @@ module Enumerable
   # Create #my_each_with_index in the same way.
   def my_each_with_index
     if block_given?
-      (self.length).times do |item|
-        yield self[item], item
+      self_array = self.to_a
+      (self_array.length).times do |item|
+        yield self_array[item], item
       end
-      self
+      self_array
     else
       self.to_enum
     end
@@ -113,29 +115,39 @@ module Enumerable
       self.to_enum
     end
   end
-  
-  # Create #my_inject
 
-  # Test your #my_inject by creating a method called #multiply_els which
-  # multiplies all the elements of the array together by using #my_inject, e.g.
-  # multiply_els([2,4,5]) #=> 40
+  # Create #my_inject
   def my_inject(*args)
-    memo = 0
-    total = args[0] ||= 0
-    if block_given?
-      (self.to_a.length).times do |item|
-       total += yield memo, self.to_a[item]
+    start = args.empty? ? 1 : 0
+    memo = args[0] ||= self.to_a[0]
+    self_array = self.to_a
+    
+    if memo.is_a?(Symbol)
+      memo = self.my_inject { |sum, n| sum.method(memo).call(n) }
+    elsif args[1].is_a?(Symbol)
+      memo = self.my_inject(args[0]) { |sum, n| sum.method(args[1]).call(n) }
+    elsif block_given?
+      (start...self_array.length).my_each do |item|
+        memo = yield memo, self_array[item]
       end
-      total
-    else
-      self.to_enum
+      memo
     end
   end
+  
 end
 
-# a = [ "a", "b", "c", "d" ]
-# p a.my_map { |x| x + "!" }
-# my_proc = Proc.new { |x| x + "**" }
-# p a.my_map(&my_proc)
+# Test your #my_inject by creating a method called #multiply_els which
+# multiplies all the elements of the array together by using #my_inject.
+def multiply_els array
+  array.my_inject {|product, item| product * item}
+end
+p multiply_els([2,4,5])                             #=> 40
+# Sum some numbers
+p (5..10).my_inject(:+)                             #=> 45
+# Same using a block and inject
+p (5..10).my_inject { |sum, n| sum + n }            #=> 45
+# Multiply some numbers
+p (5..10).my_inject(5, :*)                          #=> 756000
+# Same using a block
+p (5..10).my_inject(5) { |product, n| product * n } #=> 756000
 
-p (5..10).my_inject(5) { |sum, n| sum * n }
