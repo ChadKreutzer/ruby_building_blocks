@@ -8,3 +8,4 @@ including:
 * Stock Picker
 * Substrings
 * Bubble Sort
+* Enumerable Methods
