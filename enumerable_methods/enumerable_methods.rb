@@ -142,12 +142,3 @@ def multiply_els array
   array.my_inject {|product, item| product * item}
 end
 p multiply_els([2,4,5])                             #=> 40
-# Sum some numbers
-p (5..10).my_inject(:+)                             #=> 45
-# Same using a block and inject
-p (5..10).my_inject { |sum, n| sum + n }            #=> 45
-# Multiply some numbers
-p (5..10).my_inject(5, :*)                          #=> 756000
-# Same using a block
-p (5..10).my_inject(5) { |product, n| product * n } #=> 756000
-
