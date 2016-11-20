@@ -7,12 +7,12 @@ describe 'Enumerable Methods' do
       @a = ["a", "b", "c"]
     end
     
-    # it "should return an Enumerator if no block is given" do
-    #   expect(@a.my_each).to eq(@a.each)
-    # end
-    
-    it "should call the given block once for each element in self" do
-      expect(@a.my_each {|x| print x, " -- " }).to eq("a -- b -- c -- ")
+    it "should return an Enumerator if no block is given" do
+      expect(@a.my_each.to_a).to eq(["a", "b", "c"])
     end
+    
+    # it "should call the given block once for each element in self" do
+    #   expect(@a.my_each {|x| print x, " -- " }).to eq("a -- b -- c -- ")
+    # end
   end
 end
