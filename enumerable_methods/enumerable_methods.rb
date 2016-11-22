@@ -142,3 +142,4 @@ def multiply_els array
   array.my_inject {|product, item| product * item}
 end
 p multiply_els([2,4,5])                             #=> 40
+
